@@ -1,6 +1,6 @@
 /**
  * jQuery SmartPane
- * $Id: jquery.smartpane.js,v 1.0.0 2013/02/28 14:54:09 irokawa Exp $
+ * $Id: jquery.smartpane.js,v 1.0.1 2013/02/28 16:36:47 irokawa Exp $
  *
  * Licensed under the MIT license.
  * Copyright 2013 Takayuki Irokawa
@@ -22,10 +22,6 @@
         this.init();
         this.$parent.css('position','relative');
     };
-    SmartPane.each = function(callback, args) {
-        for (var i = 0; i < panes_length; i++)
-            callback.call(panes[i], args);
-    };
     SmartPane.prototype = {
         'init': function() {
             this.$self.css({
@@ -35,8 +31,8 @@
             });
             this.position = 'top';
             var offset = this.$self.offset();
-            this.origTop  = offset.top;
-            this.origLeft = offset.left;
+            this.origTop  = offset.top  - parseInt(this.$self.css('margin-top'));
+            this.origLeft = offset.left - parseInt(this.$self.css('margin-left'));
             this.parentTop = this.$parent.offset().top;
         },
         'refresh': function(view) {
@@ -96,7 +92,7 @@
 
     $.smartpane = {
         'init': function() {
-            SmartPane.each(SmartPane.prototype.init);
+            $.each(panes, SmartPane.prototype.init);
             $.smartpane.scroll.apply(this);
         },
         'scroll': function() {
@@ -106,7 +102,7 @@
                 'height': $window.height()
             };
             view.bottom = view.top + view.height;
-            SmartPane.each(SmartPane.prototype.refresh, view);
+            $.each(panes, SmartPane.prototype.refresh, [view]);
         }
     };
 
