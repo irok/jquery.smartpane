@@ -1,6 +1,6 @@
 /**
  * jQuery SmartPane
- * $Id: jquery.smartpane.js,v 1.0.1 2013/02/28 16:36:47 irokawa Exp $
+ * $Id: jquery.smartpane.js,v 1.1.0 2013/03/01 10:57:15 irokawa Exp $
  *
  * Licensed under the MIT license.
  * Copyright 2013 Takayuki Irokawa
@@ -10,19 +10,19 @@
  */
 
 (function($){
-    var panes = [], panes_length = 0;
+    var panes = [];
 
     if ($.support.fixedPosition === false)
         return;
 
-    var SmartPane = function(element, type) {
+    $.smartpane = function(element, type) {
         this.$self = $(element);
         this.$parent = this.$self.parent();
         this.type = type;
         this.init();
         this.$parent.css('position','relative');
     };
-    SmartPane.prototype = {
+    $.smartpane.prototype = {
         'init': function() {
             this.$self.css({
                 'position': 'relative',
@@ -35,7 +35,7 @@
             this.origLeft = offset.left - parseInt(this.$self.css('margin-left'));
             this.parentTop = this.$parent.offset().top;
         },
-        'refresh': function(view) {
+        'update': function(view) {
             this.height       = this.$self.outerHeight(true);
             this.parentHeight = this.$parent.outerHeight(true);
             this.parentBottom = this.parentTop + this.parentHeight;
@@ -89,32 +89,41 @@
             }
         }
     };
-
-    $.smartpane = {
-        'init': function() {
-            $.each(panes, SmartPane.prototype.init);
-            $.smartpane.scroll.apply(this);
+    $.extend($.smartpane, {
+        'init': function(){
+            $.smartpane.onresize.apply(this);
         },
-        'scroll': function() {
+        'onresize': function() {
+            $.each(panes, $.smartpane.prototype.init);
+            $.smartpane.onscroll.apply(this);
+        },
+        'onscroll': function() {
             var $window = $(window);
             var view = {
                 'top':    $window.scrollTop(),
                 'height': $window.height()
             };
             view.bottom = view.top + view.height;
-            $.each(panes, SmartPane.prototype.refresh, [view]);
+            $.each(panes, $.smartpane.prototype.update, [view]);
         }
+    });
+
+    $.fn.smartpane = function(type) {
+        return this.each(function() {
+            var $this = $(this);
+            if ($this.data('smartpane') == undefined) {
+                $this.data('smartpane', type);
+                panes.push(new $.smartpane(this, type));
+            }
+        });
     };
 
     $(function(){
         $('[data-smartpane]').each(function(){
-            panes.push(new SmartPane(this, $(this).data('smartpane')));
-            panes_length++;
+            panes.push(new $.smartpane(this, $(this).data('smartpane')));
         });
-        if (panes_length !== 0) {
-            $(window).resize($.smartpane.init);
-            $(window).scroll($.smartpane.scroll);
-            $.smartpane.init.apply(window);
-        }
+        $(window).resize($.smartpane.onresize);
+        $(window).scroll($.smartpane.onscroll);
+        $.smartpane.init.apply(window);
     });
 })(jQuery);

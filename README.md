@@ -13,7 +13,7 @@ jquery.smartpane
 
 スクロールに合わせて動かしたいブロック要素に、data-smartpane 属性を書く。
 
-    <div id="right-column" data-smartpane="bottom">
+    <div data-smartpane="bottom">
 
 指定できる値は以下の2つです。
 
@@ -21,4 +21,12 @@ jquery.smartpane
     * 画面上部に張り付くように動きます。
 * bottom
     * 画面下部に張り付くように動きます。
+
+data-smartpane属性を指定する代わりに、jQueryのメソッドでも指定できます。
+
+    <script>
+    $(function(){
+        $('.side-block').smartpane('top');
+    });
+    </script>
 
