@@ -8,5 +8,6 @@ Desktop.ini
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
 
-# Internet shortcut
+# Shortcut
+*.lnk
 *.url

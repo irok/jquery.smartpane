@@ -1,16 +1,15 @@
 /**
  * jQuery SmartPane
- * $Id: jquery.smartpane.js,v 1.1.0 2013/03/01 10:57:15 irokawa Exp $
+ * $Id: jquery.smartpane.js,v 1.2.0 2013/03/09 14:19:30 irokawa Exp $
  *
  * Licensed under the MIT license.
  * Copyright 2013 Takayuki Irokawa
  *
  * @requires jquery.js
- * @event scroll, resize
  */
 
 (function($){
-    var panes = [];
+    var panes = [], prevScrollTop;
 
     if ($.support.fixedPosition === false)
         return;
@@ -19,8 +18,13 @@
         this.$self = $(element);
         this.$parent = this.$self.parent();
         this.type = type;
+
+        var parentPosition = this.$parent.css('position');
+        if (parentPosition !== 'relative' && parentPosition !== 'absolute') {
+            this.$parent.css('position','relative');
+        }
+
         this.init();
-        this.$parent.css('position','relative');
     };
     $.smartpane.prototype = {
         'init': function() {
@@ -31,57 +35,85 @@
             });
             this.position = 'top';
             var offset = this.$self.offset();
-            this.origTop  = offset.top  - parseInt(this.$self.css('margin-top'));
-            this.origLeft = offset.left - parseInt(this.$self.css('margin-left'));
-            this.parentTop = this.$parent.offset().top;
+            this.containerTop  = offset.top  - parseInt(this.$self.css('margin-top'));
+            this.containerLeft = offset.left - parseInt(this.$self.css('margin-left'));
+            this.offsetTop = 0;
         },
         'update': function(view) {
-            this.height       = this.$self.outerHeight(true);
-            this.parentHeight = this.$parent.outerHeight(true);
-            this.parentBottom = this.parentTop + this.parentHeight;
+            this.height          = this.$self.outerHeight(true);
+            this.containerBottom = this.containerTop + this.$parent.innerHeight();
             var pos;
 
-            if (this.type === 'top') {
-                if (this.origTop < view.top) {
-                    if (view.top + this.height < this.parentBottom) {
-                        pos = 'fixed';
-                        this.fixedTop = 0;
-                    }
-                    else pos = 'bottom';
-                }
-                else pos = 'top';
-            }
-            else if (this.type === 'bottom') {
-                if (this.origTop + this.height < view.bottom) {
-                    if (view.bottom < this.parentBottom) {
-                        pos = 'fixed';
-                        this.fixedTop = view.height - this.height;
-                    }
-                    else pos = 'bottom';
-                }
-                else pos = this.height < view.height ? 'bottom' : 'top';
+            var type = this.type;
+            if (this.height < view.height || type === 'both' && $.smartpane.event.type === 'resize') {
+                type = 'top';
             }
 
-            if (pos !== this.position) {
+            switch (type) {
+            case 'top':
+                if (view.top <= this.containerTop)
+                    pos = 'top';
+                else if (this.containerBottom <= view.top + this.height)
+                    pos = 'bottom';
+                else {
+                    pos = 'fixed';
+                    this.offsetTop = view.top - this.containerTop;
+                }
+                break;
+            case 'bottom':
+                if (view.bottom <= this.containerTop + this.height)
+                    pos = 'top';
+                else if (this.containerBottom <= view.bottom)
+                    pos = 'bottom';
+                else {
+                    pos = 'fixed';
+                    this.offsetTop = view.bottom - this.height - this.containerTop;
+                }
+                break;
+            case 'both':
+                if (view.top <= this.containerTop)
+                    pos = 'top';
+                else if (this.containerBottom <= view.bottom)
+                    pos = 'bottom';
+                else if (view.scroll === 'up' && view.top < this.containerTop + this.offsetTop) {
+                    pos = 'fixed';
+                    this.offsetTop = view.top - this.containerTop;
+                }
+                else if (view.scroll === 'down' && this.containerTop + this.offsetTop + this.height < view.bottom) {
+                    pos = 'fixed';
+                    this.offsetTop = view.bottom - this.height - this.containerTop;
+                }
+                else
+                    pos = 'relative';
+            }
+
+            if (pos !== this.position || pos === 'fixed') {
                 switch (pos) {
                 case 'fixed':
                     this.$self.css({
                         'position': 'fixed',
-                        'top':  this.fixedTop + 'px',
-                        'left': this.origLeft + 'px'
+                        'top':  (this.containerTop + this.offsetTop - view.top) + 'px',
+                        'left': (this.containerLeft - view.left) + 'px'
                     });
                     break;
                 case 'bottom':
                     this.$self.css({
                         'position': 'relative',
-                        'top': (this.parentHeight - this.height) + 'px',
+                        'top': (this.offsetTop = this.containerBottom - this.containerTop - this.height) + 'px',
                         'left': '0px'
                     });
                     break;
                 case 'top':
                     this.$self.css({
                         'position': 'relative',
-                        'top': '0px',
+                        'top': (this.offsetTop = 0) + 'px',
+                        'left': '0px'
+                    });
+                    break;
+                case 'relative':
+                    this.$self.css({
+                        'position': 'relative',
+                        'top':  this.offsetTop + 'px',
                         'left': '0px'
                     });
                 }
@@ -98,12 +130,20 @@
             $.smartpane.onscroll.apply(this);
         },
         'onscroll': function() {
+            $.smartpane.event = this.event;
             var $window = $(window);
             var view = {
                 'top':    $window.scrollTop(),
+                'left':   $window.scrollLeft(),
                 'height': $window.height()
             };
             view.bottom = view.top + view.height;
+            view.scrollDist = view.top - prevScrollTop;
+            view.scroll = prevScrollTop < view.top ? 'down'
+                        : prevScrollTop > view.top ? 'up'
+                        :                            'none';
+            prevScrollTop = view.top;
+
             $.each(panes, $.smartpane.prototype.update, [view]);
         }
     });
@@ -119,11 +159,14 @@
     };
 
     $(function(){
+        var $window = $(window);
+        prevScrollTop = $window.scrollTop();
+        $window.resize($.smartpane.onresize);
+        $window.scroll($.smartpane.onscroll);
+
         $('[data-smartpane]').each(function(){
             panes.push(new $.smartpane(this, $(this).data('smartpane')));
         });
-        $(window).resize($.smartpane.onresize);
-        $(window).scroll($.smartpane.onscroll);
         $.smartpane.init.apply(window);
     });
 })(jQuery);

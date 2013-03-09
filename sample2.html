@@ -14,10 +14,10 @@ ul { margin-top:1em; list-style:none; line-height:150%; }
 dl { width:430px; margin:0 auto; text-align:left; }
 dd { margin:0 0 1em 2em; }
 #container { overflow:hidden; }
-#wrapper { float:left; width:800px; }
-section { float:right; width:600px; height:2400px; background:#cf6; }
-nav     { float:left;  width:200px; height:200px; }
-aside   { float:right; width:200px; }
+#wrapper { float:left;  width:800px; }
+section  { float:right; width:600px; height:2400px; background:#cf6; }
+nav      { float:left;  width:200px; height:240px; }
+aside    { float:right; width:200px; }
 aside p#long-bar  { height:800px; background:#fd6; }
 aside p.border-block { height:120px; }
 .border-block { background:#fcc; border-top:20px solid #f99; border-bottom:20px solid #f99; }
@@ -31,17 +31,18 @@ header, footer, section, nav, aside p { text-align:center; font:bold 24px Verdan
     <section>
       <dl>
         <dt>Left pane</dt><dd>data-smartpane="bottom"</dd>
-        <dt>Right pane</dt><dd>data-smartpane="top"</dd>
+        <dt>Right pane</dt><dd>data-smartpane="bottom"</dd>
       </dl>
     </section>
     <nav class="border-block" data-smartpane="bottom">
       <ul>
         <li><a href="sample1.html">Sample 1</a></li>
         <li><a href="sample2.html">Sample 2</a></li>
+        <li><a href="sample3.html">Sample 3</a></li>
       </ul>
     </nav>
   </div>
-  <aside data-smartpane="top">
+  <aside data-smartpane="bottom">
     <p class="border-block">block A</p>
     <p id="long-bar">&nbsp;</p>
     <p class="border-block">block B</p>
