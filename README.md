@@ -16,7 +16,7 @@ jquery.smartpane
 
     <div data-smartpane="bottom">
 
-指定できる値は以下の2つです。
+指定できる値は以下の3つです。
 
 * top
     * 画面上に張り付くように動きます。
@@ -29,7 +29,7 @@ data-smartpane属性を指定する代わりに、jQueryのメソッドでも指
 
     <script>
     $(function(){
-        $('.side-block').smartpane('both');
+        $('.side-block').smartpane('bottom');
     });
     </script>
 
