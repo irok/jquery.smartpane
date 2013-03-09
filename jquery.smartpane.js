@@ -1,6 +1,6 @@
 /**
  * jQuery SmartPane
- * $Id: jquery.smartpane.js,v 1.2.0 2013/03/09 14:19:30 irokawa Exp $
+ * $Id: jquery.smartpane.js,v 0.2.0 2013/03/09 14:40:32 irokawa Exp $
  *
  * Licensed under the MIT license.
  * Copyright 2013 Takayuki Irokawa
