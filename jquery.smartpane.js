@@ -1,6 +1,6 @@
 /**
  * jQuery SmartPane
- * $Id: jquery.smartpane.js,v 0.2.1 2013/03/11 12:48:52 irokawa Exp $
+ * $Id: jquery.smartpane.js,v 0.2.2 2013/03/11 12:53:43 irokawa Exp $
  *
  * Licensed under the MIT license.
  * Copyright 2013 Takayuki Irokawa
@@ -10,7 +10,7 @@
 (function($){
     var panes = [], prevScrollTop;
 
-    if ($.support.fixedPosition === false)
+    if ($.support.fixedPosition !== undefined && $.support.fixedPosition === false)
         return;
 
     $.smartpane = function(element, type) {
