@@ -1,13 +1,12 @@
 /**
  * jQuery SmartPane
- * $Id: jquery.smartpane.js,v 0.2.0 2013/03/09 14:40:32 irokawa Exp $
+ * $Id: jquery.smartpane.js,v 0.2.1 2013/03/11 12:48:52 irokawa Exp $
  *
  * Licensed under the MIT license.
  * Copyright 2013 Takayuki Irokawa
  *
  * @requires jquery.js
  */
-
 (function($){
     var panes = [], prevScrollTop;
 
@@ -123,14 +122,14 @@
     };
     $.extend($.smartpane, {
         'init': function(){
-            $.smartpane.onresize.apply(this);
+            $.smartpane.onresize.call(this, $.Event('init'));
         },
         'onresize': function() {
             $.each(panes, $.smartpane.prototype.init);
-            $.smartpane.onscroll.apply(this);
+            $.smartpane.onscroll.apply(this, arguments);
         },
-        'onscroll': function() {
-            $.smartpane.event = this.event;
+        'onscroll': function(event) {
+            $.smartpane.event = event;
             var $window = $(window);
             var view = {
                 'top':    $window.scrollTop(),
