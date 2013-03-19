@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<title>jQuery SmartPane Sample 3</title>
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="jquery.smartpane.js"></script>
+<style>
+* { margin:0; padding:0 }
+header, footer, #container { width:1000px; margin:0 auto; }
+header, footer, section, aside p { padding:3em 0; }
+header, footer { background:#6cf; }
+ul { margin-top:1em; list-style:none; line-height:150%; }
+dl { width:430px; margin:0 auto; text-align:left; }
+dd { margin:0 0 1em 2em; }
+#container { overflow:hidden; }
+section  { float:right; width:780px; height:2400px; background:#cf6; }
+aside    { float:left;  width:220px; }
+aside p#long-bar  { height:800px; background:#fd6; }
+aside p.border-block { height:120px; }
+.border-block { background:#fcc; border-top:20px solid #f99; border-bottom:20px solid #f99; }
+header, footer, section, nav, aside p { text-align:center; font:bold 24px Verdana; }
+</style>
+</head>
+<body>
+<header>SmartPane Sample 3</header>
+<div id="container">
+  <section>
+    <dl>
+      <dt>Left pane</dt><dd>data-smartpane="both"</dd>
+    </dl>
+  </section>
+  <aside data-smartpane="both">
+    <p class="border-block">block A</p>
+    <p id="long-bar">&nbsp;</p>
+    <p class="border-block">block B</p>
+  </aside>
+</div>
+<footer>Footer</footer>
+</body>
+</html>
