@@ -43,6 +43,7 @@ $.smartpane.fixedHeader('#headerId');
 
 ## 注意
 
+- bottomを指定しても、smartpaneを指定したブロックの高さが表示領域内に収まる場合はtopとして動きます。
 - 要素のmarginや親要素のpaddingのことが考えられてません。
 - スクロールの途中でpositionをfixedにするため、左側のカラムで使う場合は調整が必要です。
 
