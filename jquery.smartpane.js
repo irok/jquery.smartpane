@@ -1,6 +1,6 @@
 /**
  * jQuery SmartPane
- * $Id: jquery.smartpane.js,v 0.2.2 2013/03/11 12:53:43 irokawa Exp $
+ * $Id: jquery.smartpane.js,v 0.3.0 2014/02/02 11:00 irokawa Exp $
  *
  * Licensed under the MIT license.
  * Copyright 2013 Takayuki Irokawa
@@ -8,7 +8,7 @@
  * @requires jquery.js
  */
 (function($){
-    var panes = [], prevScrollTop;
+    var panes = [], prevScrollTop, absoluteTop = 0;
 
     if ($.support.fixedPosition !== undefined && $.support.fixedPosition === false)
         return;
@@ -16,6 +16,9 @@
     $.smartpane = function(element, type) {
         this.$self = $(element);
         this.$parent = this.$self.parent();
+        while (this.$parent.innerHeight() === 0) {
+          this.$parent = this.$parent.parent();
+        }
         this.type = type;
 
         var parentPosition = this.$parent.css('position');
@@ -30,7 +33,8 @@
             this.$self.css({
                 'position': 'relative',
                 'top': '0px',
-                'left': '0px'
+                'left': '0px',
+                'width': this.$self.innerWidth()
             });
             this.position = 'top';
             var offset = this.$self.offset();
@@ -39,7 +43,7 @@
             this.offsetTop = 0;
         },
         'update': function(view) {
-            this.height          = this.$self.outerHeight(true);
+            this.height          = this.$self.outerHeight();
             this.containerBottom = this.containerTop + this.$parent.innerHeight();
             var pos;
 
@@ -50,13 +54,13 @@
 
             switch (type) {
             case 'top':
-                if (view.top <= this.containerTop)
+                if (view.top <= this.containerTop - absoluteTop)
                     pos = 'top';
-                else if (this.containerBottom <= view.top + this.height)
+                else if (this.containerBottom <= view.top + this.height + absoluteTop)
                     pos = 'bottom';
                 else {
                     pos = 'fixed';
-                    this.offsetTop = view.top - this.containerTop;
+                    this.offsetTop = view.top - this.containerTop + absoluteTop;
                 }
                 break;
             case 'bottom':
@@ -70,13 +74,13 @@
                 }
                 break;
             case 'both':
-                if (view.top <= this.containerTop)
+                if (view.top <= this.containerTop - absoluteTop)
                     pos = 'top';
                 else if (this.containerBottom <= view.bottom)
                     pos = 'bottom';
-                else if (view.scroll === 'up' && view.top < this.containerTop + this.offsetTop) {
+                else if (view.scroll === 'up' && view.top < this.containerTop + this.offsetTop - absoluteTop) {
                     pos = 'fixed';
-                    this.offsetTop = view.top - this.containerTop;
+                    this.offsetTop = view.top - this.containerTop + absoluteTop;
                 }
                 else if (view.scroll === 'down' && this.containerTop + this.offsetTop + this.height < view.bottom) {
                     pos = 'fixed';
@@ -144,6 +148,9 @@
             prevScrollTop = view.top;
 
             $.each(panes, $.smartpane.prototype.update, [view]);
+        },
+        'fixedHeader': function(id) {
+            absoluteTop = $(id).outerHeight();
         }
     });
 
