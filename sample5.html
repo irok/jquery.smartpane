@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
-<title>jQuery SmartPane Sample 1</title>
+<title>jQuery SmartPane Sample 3</title>
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="jquery.smartpane.js"></script>
 <style>
@@ -24,17 +24,18 @@ aside p.border-block { height:120px; }
 header, footer, section, nav, aside p { text-align:center; font:bold 24px Verdana; }
 </style>
 </head>
-<body>
-<header>SmartPane Sample 1</header>
+<body style="position:relative; top:40px;">
+<div id="fixedHeader" style="position:fixed; left:0; top:0; height:40px; width:100%; background:gray; z-index:1000;"></div>
+<header>SmartPane Sample 5</header>
 <div id="container">
   <div id="wrapper">
     <section>
       <dl>
-        <dt>Left pane</dt><dd>data-smartpane="top"</dd>
-        <dt>Right pane</dt><dd>data-smartpane="top"</dd>
+        <dt>Left pane</dt><dd>data-smartpane="both"</dd>
+        <dt>Right pane</dt><dd>data-smartpane="both"</dd>
       </dl>
     </section>
-    <nav class="border-block" data-smartpane="top">
+    <nav class="border-block" data-smartpane="both">
       <ul>
         <li><a href="sample1.html">Sample 1</a></li>
         <li><a href="sample2.html">Sample 2</a></li>
@@ -44,12 +45,15 @@ header, footer, section, nav, aside p { text-align:center; font:bold 24px Verdan
       </ul>
     </nav>
   </div>
-  <aside data-smartpane="top">
+  <aside data-smartpane="both">
     <p class="border-block">block A</p>
     <p id="long-bar">&nbsp;</p>
     <p class="border-block">block B</p>
   </aside>
 </div>
 <footer>Footer</footer>
+<script>
+$.smartpane.options({fixedHeader:'#fixedHeader'});
+</script>
 </body>
 </html>

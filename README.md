@@ -35,10 +35,10 @@ $(function(){
 });
 ```
 
-ページ上部に固定表示されるヘッダーがある場合は、fixedHeaderメソッドでヘッダーのIDを指定してください。
+ページ上部に固定表示されるヘッダーがある場合は、optionsメソッドでヘッダーのIDを指定してください。
 
 ```javascript
-$.smartpane.fixedHeader('#headerId');
+$.smartpane.options({fixedHeader:'#headerId'});
 ```
 
 ## 注意
