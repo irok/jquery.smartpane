@@ -1,0 +1,35 @@
+{
+  "title": "jQuery SmartPane",
+  "name": "jquery.smartpane",
+  "version": "0.3.1",
+  "description": "任意のブロック要素をページのスクロールに合わせて動かすjQuery plugin",
+  "main": "jquery.smartpane.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/irok/jquery.smartpane.git"
+  },
+  "keywords": [
+    "jQuery",
+    "plugin"
+  ],
+  "author": "irok",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/irok/jquery.smartpane/issues"
+  },
+  "homepage": "https://github.com/irok/jquery.smartpane",
+  "devDependencies": {
+    "gulp": "^3.8.7",
+    "gulp-header": "^1.0.5",
+    "gulp-jshint": "^1.8.4",
+    "gulp-load-plugins": "^0.5.3",
+    "gulp-rename": "^1.2.0",
+    "gulp-sourcemaps": "^1.1.1",
+    "gulp-uglify": "^0.3.1",
+    "gulp-util": "^3.0.0",
+    "jshint-stylish": "^0.4.0"
+  }
+}

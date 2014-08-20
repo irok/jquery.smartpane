@@ -1,11 +1,12 @@
 /**
- * jQuery SmartPane
- * $Id: jquery.smartpane.js,v 0.3.1 2014/02/03 17:35 irokawa Exp $
+ * jQuery SmartPane v0.3.1
+ * https://github.com/irok/jquery.smartpane
  *
- * Licensed under the MIT license.
- * Copyright 2013 Takayuki Irokawa
+ * Copyright 2013 irok
+ * Released under the MIT license
+ * https://github.com/irok/jquery.smartpane/blob/master/LICENSE
  *
- * @requires jquery.js
+ * Date: 2014-08-20T09:13:26Z
  */
 (function($){
     var panes = [], view = {}, options = {}, initialized = false, prevScrollTop;
@@ -28,6 +29,7 @@
 
         this.init();
     };
+
     $.smartpane.prototype = {
         'init': function() {
             this.$self.css({
@@ -124,6 +126,7 @@
             }
         }
     };
+
     $.extend($.smartpane, {
         'init': function(){
             initialized = true;
@@ -159,7 +162,7 @@
     $.fn.smartpane = function(type) {
         return this.each(function() {
             var $this = $(this);
-            if ($this.data('smartpane') == undefined) {
+            if ($this.data('smartpane') === undefined) {
                 $this.data('smartpane', type);
                 panes.push(new $.smartpane(this, type));
             }

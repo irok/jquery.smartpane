@@ -2,9 +2,9 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
-<title>jQuery SmartPane Sample 2</title>
+<title>jQuery SmartPane Demo 4</title>
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-<script src="jquery.smartpane.js"></script>
+<script src="../dist/jquery.smartpane.min.js"></script>
 <style>
 * { margin:0; padding:0 }
 header, footer, #container { width:1000px; margin:0 auto; }
@@ -14,10 +14,8 @@ ul { margin-top:1em; list-style:none; line-height:150%; }
 dl { width:430px; margin:0 auto; text-align:left; }
 dd { margin:0 0 1em 2em; }
 #container { overflow:hidden; }
-#wrapper { float:left;  width:800px; }
-section  { float:right; width:600px; height:2400px; background:#cf6; }
-nav      { float:left;  width:200px; height:240px; }
-aside    { float:right; width:200px; }
+section  { float:right; width:780px; height:2400px; background:#cf6; }
+aside    { float:left;  width:220px; }
 aside p#long-bar  { height:800px; background:#fd6; }
 aside p.border-block { height:120px; }
 .border-block { background:#fcc; border-top:20px solid #f99; border-bottom:20px solid #f99; }
@@ -25,24 +23,14 @@ header, footer, section, nav, aside p { text-align:center; font:bold 24px Verdan
 </style>
 </head>
 <body>
-<header>SmartPane Sample 2</header>
+<header>SmartPane Demo 4</header>
 <div id="container">
-  <div id="wrapper">
-    <section>
-      <dl>
-        <dt>Left pane</dt><dd>data-smartpane="bottom"</dd>
-        <dt>Right pane</dt><dd>data-smartpane="bottom"</dd>
-      </dl>
-    </section>
-    <nav class="border-block" data-smartpane="bottom">
-      <ul>
-        <li><a href="sample1.html">Sample 1</a></li>
-        <li><a href="sample2.html">Sample 2</a></li>
-        <li><a href="sample3.html">Sample 3</a></li>
-      </ul>
-    </nav>
-  </div>
-  <aside data-smartpane="bottom">
+  <section>
+    <dl>
+      <dt>Left pane</dt><dd>data-smartpane="both"</dd>
+    </dl>
+  </section>
+  <aside data-smartpane="both">
     <p class="border-block">block A</p>
     <p id="long-bar">&nbsp;</p>
     <p class="border-block">block B</p>
