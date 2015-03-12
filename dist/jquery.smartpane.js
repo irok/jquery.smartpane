@@ -6,10 +6,12 @@
  * Released under the MIT license
  * https://github.com/irok/jquery.smartpane/blob/master/LICENSE
  *
- * Date: 2014-08-20T09:13:26Z
+ * Date: 2015-03-12T13:32:24Z
  */
 (function($){
-    var panes = [], view = {}, options = {}, initialized = false, prevScrollTop;
+    var $window   = $(window),
+        $document = $(document),
+        panes = [], view = {}, options = {}, initialized = false, documentHeight = 0, prevScrollTop;
 
     if ($.support.fixedPosition !== undefined && $.support.fixedPosition === false)
         return;
@@ -27,7 +29,9 @@
             this.$parent.css('position','relative');
         }
 
-        this.init();
+        if (initialized) {
+            this.init();
+        }
     };
 
     $.smartpane.prototype = {
@@ -139,7 +143,6 @@
         },
         'onscroll': function(event) {
             $.smartpane.event = event;
-            var $window = $(window);
             view.scrollTop = $window.scrollTop();
             view.top    = view.scrollTop + view.marginTop;
             view.left   = $window.scrollLeft();
@@ -151,6 +154,11 @@
                         :                                  'none';
             prevScrollTop = view.scrollTop;
 
+            var _documentHeight = $document.innerHeight();
+            if (documentHeight !== _documentHeight) {
+                documentHeight = _documentHeight;
+                $.each(panes, $.smartpane.prototype.init);
+            }
             $.each(panes, $.smartpane.prototype.update);
         },
         'options': function(args) {
@@ -171,13 +179,13 @@
 
     function applyOptions() {
         if (initialized) {
+            documentHeight = $document.innerHeight();
             view.marginTop    = options.fixedHeader ? $(options.fixedHeader).outerHeight() : 0;
             view.marginBottom = options.fixedFooter ? $(options.fixedFooter).outerHeight() : 0;
         }
     }
 
     $(function(){
-        var $window = $(window);
         prevScrollTop = $window.scrollTop();
         $window.resize($.smartpane.onresize);
         $window.scroll($.smartpane.onscroll);
