@@ -1,7 +1,7 @@
 {
   "title": "jQuery SmartPane",
   "name": "jquery.smartpane",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "任意のブロック要素をページのスクロールに合わせて動かすjQuery plugin",
   "main": "jquery.smartpane.js",
   "scripts": {
