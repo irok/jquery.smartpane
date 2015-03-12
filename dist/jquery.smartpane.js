@@ -1,12 +1,12 @@
 /**
- * jQuery SmartPane v0.3.1
+ * jQuery SmartPane v0.3.2
  * https://github.com/irok/jquery.smartpane
  *
  * Copyright 2013 irok
  * Released under the MIT license
  * https://github.com/irok/jquery.smartpane/blob/master/LICENSE
  *
- * Date: 2015-03-12T13:32:24Z
+ * Date: 2015-03-12T13:37:21Z
  */
 (function($){
     var $window   = $(window),
