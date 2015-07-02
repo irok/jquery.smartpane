@@ -1,0 +1,17 @@
+{
+  "name": "jquery.smartpane",
+  "version": "0.3.2",
+  "homepage": "https://github.com/irok/jquery.smartpane",
+  "authors": [
+    "irok"
+  ],
+  "main": "dist/jquery.smartpane.js",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
