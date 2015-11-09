@@ -6,7 +6,7 @@
  * Released under the MIT license
  * https://github.com/irok/jquery.smartpane/blob/master/LICENSE
  *
- * Date: 2015-11-09T10:52:35Z
+ * Date: 2015-11-09T10:56:12Z
  */
 (function($){
     var $window   = $(window),
@@ -42,7 +42,7 @@
                 'position': 'relative',
                 'top': '0px',
                 'left': '0px',
-                'width': $self.innerWidth()
+                'width': $self.css('box-sizing') === 'border-box' ? $self.outerWidth() : $self.innerWidth()
             });
             _this.position = 'top';
             var offset = $self.offset();

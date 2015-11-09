@@ -32,7 +32,7 @@
                 'position': 'relative',
                 'top': '0px',
                 'left': '0px',
-                'width': $self.innerWidth()
+                'width': $self.css('box-sizing') === 'border-box' ? $self.outerWidth() : $self.innerWidth()
             });
             _this.position = 'top';
             var offset = $self.offset();
