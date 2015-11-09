@@ -6,7 +6,7 @@
  * Released under the MIT license
  * https://github.com/irok/jquery.smartpane/blob/master/LICENSE
  *
- * Date: 2015-03-12T13:37:21Z
+ * Date: 2015-11-09T10:52:35Z
  */
 (function($){
     var $window   = $(window),
@@ -17,116 +17,119 @@
         return;
 
     $.smartpane = function(element, type) {
-        this.$self = $(element);
-        this.$parent = this.$self.parent();
-        while (this.$parent.innerHeight() === 0) {
-          this.$parent = this.$parent.parent();
+        var _this = this;
+        _this.$self = $(element);
+        _this.$parent = _this.$self.parent();
+        while (_this.$parent.innerHeight() === 0) {
+          _this.$parent = _this.$parent.parent();
         }
-        this.type = type;
+        _this.type = type;
 
-        var parentPosition = this.$parent.css('position');
+        var parentPosition = _this.$parent.css('position');
         if (parentPosition !== 'relative' && parentPosition !== 'absolute') {
-            this.$parent.css('position','relative');
+            _this.$parent.css('position','relative');
         }
 
         if (initialized) {
-            this.init();
+            _this.init();
         }
     };
 
     $.smartpane.prototype = {
         'init': function() {
-            this.$self.css({
+            var _this = this, $self = _this.$self;
+            $self.css({
                 'position': 'relative',
                 'top': '0px',
                 'left': '0px',
-                'width': this.$self.innerWidth()
+                'width': $self.innerWidth()
             });
-            this.position = 'top';
-            var offset = this.$self.offset();
-            this.containerTop  = offset.top  - parseInt(this.$self.css('margin-top'));
-            this.containerLeft = offset.left - parseInt(this.$self.css('margin-left'));
-            this.offsetTop = 0;
+            _this.position = 'top';
+            var offset = $self.offset();
+            _this.containerTop  = offset.top  - parseInt($self.css('margin-top'));
+            _this.containerLeft = offset.left - parseInt($self.css('margin-left'));
+            _this.offsetTop = 0;
         },
         'update': function() {
-            this.height          = this.$self.outerHeight();
-            this.containerBottom = this.containerTop + this.$parent.innerHeight();
+            var _this = this;
+            _this.height          = _this.$self.outerHeight();
+            _this.containerBottom = _this.containerTop + _this.$parent.innerHeight();
             var pos;
 
-            var type = this.type;
-            if (this.height < view.height || type === 'both' && $.smartpane.event.type === 'resize') {
+            var type = _this.type;
+            if (_this.height < view.height || type === 'both' && $.smartpane.event.type === 'resize') {
                 type = 'top';
             }
 
             switch (type) {
             case 'top':
-                if (view.top <= this.containerTop)
+                if (view.top <= _this.containerTop)
                     pos = 'top';
-                else if (this.containerBottom <= view.top + this.height)
+                else if (_this.containerBottom <= view.top + _this.height)
                     pos = 'bottom';
                 else {
                     pos = 'fixed';
-                    this.offsetTop = view.top - this.containerTop;
+                    _this.offsetTop = view.top - _this.containerTop;
                 }
                 break;
             case 'bottom':
-                if (view.bottom <= this.containerTop + this.height)
+                if (view.bottom <= _this.containerTop + _this.height)
                     pos = 'top';
-                else if (this.containerBottom <= view.bottom)
+                else if (_this.containerBottom <= view.bottom)
                     pos = 'bottom';
                 else {
                     pos = 'fixed';
-                    this.offsetTop = view.bottom - this.height - this.containerTop;
+                    _this.offsetTop = view.bottom - _this.height - _this.containerTop;
                 }
                 break;
             case 'both':
-                if (view.top <= this.containerTop)
+                if (view.top <= _this.containerTop)
                     pos = 'top';
-                else if (this.containerBottom <= view.bottom)
+                else if (_this.containerBottom <= view.bottom)
                     pos = 'bottom';
-                else if (view.scroll === 'up' && view.top < this.containerTop + this.offsetTop) {
+                else if (view.scroll === 'up' && view.top < _this.containerTop + _this.offsetTop) {
                     pos = 'fixed';
-                    this.offsetTop = view.top - this.containerTop;
+                    _this.offsetTop = view.top - _this.containerTop;
                 }
-                else if (view.scroll === 'down' && this.containerTop + this.offsetTop + this.height < view.bottom) {
+                else if (view.scroll === 'down' && _this.containerTop + _this.offsetTop + _this.height < view.bottom) {
                     pos = 'fixed';
-                    this.offsetTop = view.bottom - this.height - this.containerTop;
+                    _this.offsetTop = view.bottom - _this.height - _this.containerTop;
                 }
                 else
                     pos = 'relative';
             }
 
-            if (pos !== this.position || pos === 'fixed') {
+            if (pos !== _this.position || pos === 'fixed') {
                 switch (pos) {
                 case 'fixed':
-                    this.$self.css({
+                    _this.$self.css({
                         'position': 'fixed',
-                        'top':  (this.containerTop + this.offsetTop - view.scrollTop) + 'px',
-                        'left': (this.containerLeft - view.left) + 'px'
+                        'top':  (_this.containerTop + _this.offsetTop - view.scrollTop) + 'px',
+                        'left': (_this.containerLeft - view.left) + 'px'
                     });
                     break;
                 case 'bottom':
-                    this.$self.css({
+                    _this.$self.css({
                         'position': 'relative',
-                        'top': (this.offsetTop = this.containerBottom - this.containerTop - this.height) + 'px',
+                        'top': (_this.offsetTop = _this.containerBottom - _this.containerTop - _this.height) + 'px',
                         'left': '0px'
                     });
                     break;
                 case 'top':
-                    this.$self.css({
+                    _this.$self.css({
                         'position': 'relative',
-                        'top': (this.offsetTop = 0) + 'px',
+                        'top': (_this.offsetTop = 0) + 'px',
                         'left': '0px'
                     });
                     break;
                 case 'relative':
-                    this.$self.css({
+                    _this.$self.css({
                         'position': 'relative',
-                        'top':  this.offsetTop + 'px',
+                        'top':  _this.offsetTop + 'px',
                         'left': '0px'
                     });
                 }
-                this.position = pos;
+                _this.position = pos;
             }
         }
     };
