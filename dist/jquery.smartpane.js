@@ -6,7 +6,7 @@
  * Released under the MIT license
  * https://github.com/irok/jquery.smartpane/blob/master/LICENSE
  *
- * Date: 2015-11-09T10:56:12Z
+ * Date: 2015-11-09T11:01:40Z
  */
 (function($){
     var $window   = $(window),
@@ -17,7 +17,7 @@
         return;
 
     $.smartpane = function(element, type) {
-        var _this = this;
+        var _this = this, parentPosition;
         _this.$self = $(element);
         _this.$parent = _this.$self.parent();
         while (_this.$parent.innerHeight() === 0) {
@@ -25,7 +25,7 @@
         }
         _this.type = type;
 
-        var parentPosition = _this.$parent.css('position');
+        parentPosition = _this.$parent.css('position');
         if (parentPosition !== 'relative' && parentPosition !== 'absolute') {
             _this.$parent.css('position','relative');
         }
@@ -37,7 +37,7 @@
 
     $.smartpane.prototype = {
         'init': function() {
-            var _this = this, $self = _this.$self;
+            var _this = this, $self = _this.$self, offset;
             $self.css({
                 'position': 'relative',
                 'top': '0px',
@@ -45,18 +45,16 @@
                 'width': $self.css('box-sizing') === 'border-box' ? $self.outerWidth() : $self.innerWidth()
             });
             _this.position = 'top';
-            var offset = $self.offset();
+            offset = $self.offset();
             _this.containerTop  = offset.top  - parseInt($self.css('margin-top'));
             _this.containerLeft = offset.left - parseInt($self.css('margin-left'));
             _this.offsetTop = 0;
         },
         'update': function() {
-            var _this = this;
+            var _this = this, type = _this.type, pos;
             _this.height          = _this.$self.outerHeight();
             _this.containerBottom = _this.containerTop + _this.$parent.innerHeight();
-            var pos;
 
-            var type = _this.type;
             if (_this.height < view.height || type === 'both' && $.smartpane.event.type === 'resize') {
                 type = 'top';
             }
